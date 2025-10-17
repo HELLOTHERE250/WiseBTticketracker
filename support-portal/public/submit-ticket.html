@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Support Request</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000435 0%, #001a5c 50%, #000435 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: #00bcd4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+        }
+
+        .header h1 {
+            color: #000435;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000435;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .priority-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .priority-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .priority-option input[type="radio"] {
+            display: none;
+        }
+
+        .priority-option label {
+            display: block;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .priority-option input[type="radio"]:checked + label {
+            background: #00bcd4;
+            color: white;
+            border-color: #00bcd4;
+        }
+
+        .priority-option label:hover {
+            border-color: #00bcd4;
+            background: rgba(0, 188, 212, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 188, 212, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .error-message {
+            display: none;
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .priority-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <h1>Create Support Request</h1>
+            <p>Please provide detailed information about your issue. Our team will respond within 24 hours.</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Ticket submitted successfully! We'll get back to you within 24 hours.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            There was an error submitting your ticket. Please try again.
+        </div>
+
+        <div class="loading" id="loadingMessage">
+            Submitting your ticket...
+        </div>
+
+        <form id="ticketForm">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason for Ticket *</label>
+                <input type="text" id="reason" name="reason" placeholder="Please describe the reason for your ticket..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Priority Level *</label>
+                <div class="priority-group">
+                    <div class="priority-option">
+                        <input type="radio" id="low" name="priority" value="low" required>
+                        <label for="low">Low</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="medium" name="priority" value="medium" required>
+                        <label for="medium">Medium</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="high" name="priority" value="high" required>
+                        <label for="high">High</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="urgent" name="priority" value="urgent" required>
+                        <label for="urgent">Urgent</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="note">Additional Notes</label>
+                <textarea id="note" name="note" placeholder="Please provide any additional details about your issue..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Ticket</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Show loading
+            loadingMessage.style.display = 'block';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                // Get form data
+                const formData = new FormData(this);
+                const ticketData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    reason: formData.get('reason'),
+                    priority: formData.get('priority'),
+                    note: formData.get('note')
+                };
+                
+                // Submit to backend
+                const response = await fetch('/api/tickets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(ticketData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to submit ticket');
+                }
+                
+                const result = await response.json();
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                
+                // Hide loading
+                loadingMessage.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Ticket';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error submitting ticket:', error);
+                
+                // Show error message
+                errorMessage.style.display = 'block';
+                
+                // Hide loading
+                loadingMessage.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Ticket';
+                
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
