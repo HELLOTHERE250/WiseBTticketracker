@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Support Ticket</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000435 0%, #001a5c 50%, #000435 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #000435;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000435;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .priority-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .priority-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .priority-option input[type="radio"] {
+            display: none;
+        }
+
+        .priority-option label {
+            display: block;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .priority-option input[type="radio"]:checked + label {
+            background: #00bcd4;
+            color: white;
+            border-color: #00bcd4;
+        }
+
+        .priority-option label:hover {
+            border-color: #00bcd4;
+            background: rgba(0, 188, 212, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 188, 212, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .priority-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Submit Support Ticket</h1>
+            <p>We're here to help! Please fill out the form below and we'll get back to you soon.</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Ticket submitted successfully! We'll get back to you within 24 hours.
+        </div>
+
+        <form id="ticketForm">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason for Ticket *</label>
+                <input type="text" id="reason" name="reason" placeholder="Please describe the reason for your ticket..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Priority Level *</label>
+                <div class="priority-group">
+                    <div class="priority-option">
+                        <input type="radio" id="low" name="priority" value="low" required>
+                        <label for="low">Low</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="medium" name="priority" value="medium" required>
+                        <label for="medium">Medium</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="high" name="priority" value="high" required>
+                        <label for="high">High</label>
+                    </div>
+                    <div class="priority-option">
+                        <input type="radio" id="urgent" name="priority" value="urgent" required>
+                        <label for="urgent">Urgent</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="note">Additional Notes</label>
+                <textarea id="note" name="note" placeholder="Please provide any additional details about your issue..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Ticket</button>
+        </form>
+    </div>
+
+    <script>
+        // Generate unique ticket ID
+        function generateTicketId() {
+            return 'TKT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        document.getElementById('ticketForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const ticketData = {
+                id: generateTicketId(),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                reason: formData.get('reason'),
+                priority: formData.get('priority'),
+                note: formData.get('note'),
+                status: 'new',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in localStorage
+            let tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            tickets.push(ticketData);
+            localStorage.setItem('supportTickets', JSON.stringify(tickets));
+            
+            // Trigger notification for view tickets page
+            localStorage.setItem('newTicketNotification', JSON.stringify({
+                ticketId: ticketData.id,
+                timestamp: Date.now(),
+                priority: ticketData.priority,
+                name: ticketData.name
+            }));
+            
+            // Dispatch custom event for real-time communication
+            window.dispatchEvent(new CustomEvent('newTicketSubmitted', {
+                detail: ticketData
+            }));
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Reset form
+            this.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
